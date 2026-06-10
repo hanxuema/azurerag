@@ -1,0 +1,8 @@
+name: azurerag
+metadata:
+  template: azurerag@0.1.0
+services:
+  api:
+    project: ./backend
+    language: js
+    host: function
