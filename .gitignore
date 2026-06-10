@@ -1,0 +1,12 @@
+node_modules/
+.terraform/
+.terraform.lock.hcl
+dist/
+coverage/
+*.log
+.DS_Store
+backend/local.settings.json
+backend/.funcignore
+backend/.azurefunctions/
+frontend/.env
+tmp/
