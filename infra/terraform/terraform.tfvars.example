@@ -1,0 +1,5 @@
+project_name        = "ragdemo"
+resource_group_name = "rg-rag-demo"
+location            = "australiaeast"
+search_sku          = "basic"
+openai_sku_name     = "S0"
