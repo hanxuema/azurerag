@@ -1,0 +1,21 @@
+{
+  "name": "azure-foundry-rag-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/functions/*.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "func start",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.6.0",
+    "@azure/identity": "^4.4.1",
+    "@azure/search-documents": "^12.1.0",
+    "@azure/storage-blob": "^12.26.0",
+    "dotenv": "^16.4.5"
+  }
+}
