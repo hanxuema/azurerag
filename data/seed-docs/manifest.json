@@ -1,0 +1,10 @@
+{
+  "collection": "azure-rag-demo",
+  "documents": [
+    "azure-rag-fundamentals.md",
+    "azure-ai-foundry-overview.md",
+    "vector-search-patterns.md",
+    "grounded-answers-and-citations.md",
+    "cost-conscious-architecture.md"
+  ]
+}
