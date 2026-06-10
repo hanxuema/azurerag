@@ -1,0 +1,203 @@
+:root {
+  --bg: #f4efe6;
+  --ink: #1e2a28;
+  --muted: #5f6b68;
+  --accent: #0c7c59;
+  --accent-dark: #085c42;
+  --panel: rgba(255, 252, 246, 0.88);
+  --border: rgba(30, 42, 40, 0.12);
+  --shadow: 0 18px 60px rgba(12, 124, 89, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(12, 124, 89, 0.18), transparent 30%),
+    linear-gradient(180deg, #efe5d4 0%, var(--bg) 50%, #e7efe8 100%);
+  min-height: 100vh;
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+.hero {
+  padding: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  color: var(--accent-dark);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  line-height: 0.95;
+  max-width: 11ch;
+}
+
+.hero-copy {
+  max-width: 58ch;
+  font-size: 1.1rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr);
+  gap: 20px;
+}
+
+.panel {
+  backdrop-filter: blur(20px);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.panel-heading h2,
+.answer-meta h3,
+.citation-card h3 {
+  margin: 0;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.panel-heading p,
+.answer-meta span,
+.citation-card p,
+.citation-card strong {
+  color: var(--muted);
+}
+
+.composer {
+  display: grid;
+  gap: 16px;
+}
+
+.label,
+.controls span {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+textarea,
+input[type="range"] {
+  width: 100%;
+}
+
+textarea {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 16px;
+  font: inherit;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.controls label {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(12, 124, 89, 0.08);
+}
+
+.primary-btn {
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), #13a774);
+  color: #fff;
+  padding: 14px 22px;
+  font: 600 1rem "Trebuchet MS", sans-serif;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.answer-block {
+  margin-top: 28px;
+}
+
+.answer-meta,
+.citation-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.answer-output,
+.citation-card {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 20px;
+}
+
+.answer-output {
+  min-height: 180px;
+  padding: 18px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.evidence-list {
+  display: grid;
+  gap: 14px;
+}
+
+.citation-card {
+  padding: 16px;
+}
+
+.citation-badge {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(12, 124, 89, 0.12);
+  color: var(--accent-dark);
+  font-family: "Trebuchet MS", sans-serif;
+}
+
+.empty-state {
+  color: var(--muted);
+}
+
+.error-state {
+  color: #8f2727;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .page-shell {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .hero {
+    padding: 20px 8px 24px;
+  }
+}
