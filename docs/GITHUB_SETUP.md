@@ -21,15 +21,27 @@ Add these repository secrets in GitHub:
 - `AZURE_STATIC_WEB_APPS_API_TOKEN`: deployment token for the Static Web App
 - `RAG_API_BASE_URL`: public API base URL, for example `https://<function-app>.azurewebsites.net/api`
 
-## Required Repository Variables Or Files
+## Required Repository Variables
 
-The `Infra` workflow expects a valid `infra/terraform/terraform.tfvars` file in the repository workspace. Do not commit real subscription-specific values unless that is intentional.
+The `Infra` workflow now generates `infra/terraform/terraform.tfvars` from GitHub repository variables.
 
-Recommended approach:
+Add these repository variables in GitHub if you want to override defaults:
 
-- keep `terraform.tfvars.example` in git
-- create `terraform.tfvars` only in CI or locally
-- if you want full CI apply, add a pre-step that writes `terraform.tfvars` from secrets or variables
+- `TF_PROJECT_NAME`
+- `TF_RESOURCE_GROUP_NAME`
+- `TF_LOCATION`
+- `TF_STATIC_WEB_APP_LOCATION`
+- `TF_SEARCH_SKU`
+- `TF_OPENAI_SKU_NAME`
+
+Default values if you do nothing:
+
+- `TF_PROJECT_NAME=ragdemo`
+- `TF_RESOURCE_GROUP_NAME=rg-rag-demo`
+- `TF_LOCATION=australiaeast`
+- `TF_STATIC_WEB_APP_LOCATION=eastasia`
+- `TF_SEARCH_SKU=basic`
+- `TF_OPENAI_SKU_NAME=S0`
 
 ## Azure OIDC Setup
 
@@ -95,13 +107,18 @@ After deploying the Function App, set:
 
 ### 7. Terraform input handling
 
-Choose one of these approaches:
+This repo uses GitHub repository variables to generate `terraform.tfvars` during the workflow. You do not need to commit a live `terraform.tfvars` file for CI.
 
-1. Commit a non-sensitive `terraform.tfvars` if the values are safe for source control.
-2. Store each Terraform input as a GitHub secret or variable and generate `terraform.tfvars` during the workflow.
+### 8. Resource provider registration
 
-Recommended for this repo: generate `terraform.tfvars` in CI, because names and regions are fine to expose, but keeping the workflow explicit is cleaner and avoids accidental environment coupling.
+The `Infra` workflow explicitly registers and waits for these Azure resource providers before running Terraform:
 
-## Recommended Next Improvement
+- `Microsoft.Storage`
+- `Microsoft.Web`
+- `Microsoft.Search`
+- `Microsoft.CognitiveServices`
+- `Microsoft.Insights`
+- `Microsoft.OperationalInsights`
+- `Microsoft.KeyVault`
 
-If you want fully hands-off CI, update `Infra` to generate `infra/terraform/terraform.tfvars` from repository variables before `terraform plan` and `terraform apply`.
+This avoids the subscription-level registration conflicts that can happen when Terraform tries to auto-register everything on first run.
