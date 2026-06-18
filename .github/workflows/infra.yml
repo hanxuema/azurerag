@@ -20,6 +20,12 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       ARM_USE_OIDC: true
+      TF_VAR_project_name: ${{ vars.TF_PROJECT_NAME || 'ragdemo' }}
+      TF_VAR_resource_group_name: ${{ vars.TF_RESOURCE_GROUP_NAME || 'rg-rag-demo' }}
+      TF_VAR_location: ${{ vars.TF_LOCATION || 'australiaeast' }}
+      TF_VAR_static_web_app_location: ${{ vars.TF_STATIC_WEB_APP_LOCATION || 'eastasia' }}
+      TF_VAR_search_sku: ${{ vars.TF_SEARCH_SKU || 'basic' }}
+      TF_VAR_openai_sku_name: ${{ vars.TF_OPENAI_SKU_NAME || 'S0' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,6 +36,46 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Generate Terraform tfvars
+        working-directory: infra/terraform
+        run: |
+          cat > terraform.tfvars <<EOF
+          project_name             = "${TF_VAR_project_name}"
+          resource_group_name      = "${TF_VAR_resource_group_name}"
+          location                 = "${TF_VAR_location}"
+          static_web_app_location  = "${TF_VAR_static_web_app_location}"
+          search_sku               = "${TF_VAR_search_sku}"
+          openai_sku_name          = "${TF_VAR_openai_sku_name}"
+          EOF
+
+      - name: Register Required Resource Providers
+        run: |
+          az provider register --namespace Microsoft.Storage
+          az provider register --namespace Microsoft.Web
+          az provider register --namespace Microsoft.Search
+          az provider register --namespace Microsoft.CognitiveServices
+          az provider register --namespace Microsoft.Insights
+          az provider register --namespace Microsoft.OperationalInsights
+          az provider register --namespace Microsoft.KeyVault
+
+      - name: Wait For Resource Provider Registration
+        run: |
+          for namespace in Microsoft.Storage Microsoft.Web Microsoft.Search Microsoft.CognitiveServices Microsoft.Insights Microsoft.OperationalInsights Microsoft.KeyVault; do
+            echo "Waiting for ${namespace}"
+            for attempt in $(seq 1 30); do
+              state=$(az provider show -n "${namespace}" --query registrationState -o tsv)
+              echo "${namespace}: ${state}"
+              if [ "${state}" = "Registered" ]; then
+                break
+              fi
+              if [ "${attempt}" -eq 30 ]; then
+                echo "Timed out waiting for ${namespace} to register"
+                exit 1
+              fi
+              sleep 20
+            done
+          done
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
