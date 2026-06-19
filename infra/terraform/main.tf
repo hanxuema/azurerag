@@ -1,5 +1,5 @@
 locals {
-  normalized_project = lower(regexreplace(var.project_name, "[^a-zA-Z0-9]", ""))
+  normalized_project = lower(replace(var.project_name, "/[^a-zA-Z0-9]/", ""))
 }
 
 resource "random_string" "suffix" {
