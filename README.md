@@ -81,7 +81,7 @@ npm start
 
 ## Deployment Notes
 
-Terraform provisions the durable infrastructure. Model deployment and initial content upload are kept as explicit scripts because provider coverage for Azure AI Foundry model lifecycle remains uneven.
+Terraform provisions the durable infrastructure. Model deployment and initial content upload are kept as explicit scripts because provider coverage for Azure AI Foundry model lifecycle remains uneven. GitHub Actions deploy workflows in this repo are intentionally disabled; use local deployment steps instead.
 
 Recommended flow:
 

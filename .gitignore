@@ -1,6 +1,9 @@
 node_modules/
 .terraform/
 .terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfvars
 dist/
 coverage/
 *.log

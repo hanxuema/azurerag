@@ -59,10 +59,11 @@ export async function buildDocumentsFromBlobs(logger) {
     for (let index = 0; index < chunks.length; index += 1) {
       const chunk = chunks[index];
       const embedding = await createEmbedding(chunk);
+      const chunkKey = buildChunkKey(blob.name, index);
 
       docs.push({
-        id: `${blob.name}-${index}`,
-        chunkId: `${blob.name}-${index}`,
+        id: chunkKey,
+        chunkId: chunkKey,
         title: inferTitle(content, blob.name),
         documentPath: blob.name,
         content: chunk,
@@ -94,6 +95,10 @@ export async function uploadDocuments(documents) {
 function inferTitle(content, fallback) {
   const firstHeading = content.match(/^#\s+(.+)$/m);
   return firstHeading?.[1]?.trim() || fallback;
+}
+
+function buildChunkKey(blobName, chunkIndex) {
+  return `${blobName.replace(/[^A-Za-z0-9_=-]/g, "-")}-${chunkIndex}`;
 }
 
 async function streamToString(stream) {

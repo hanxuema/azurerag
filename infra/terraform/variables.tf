@@ -10,12 +10,6 @@ variable "location" {
   default     = "australiaeast"
 }
 
-variable "static_web_app_location" {
-  type        = string
-  description = "Azure region for Static Web App. Static Web Apps are not available in every region."
-  default     = "eastasia"
-}
-
 variable "resource_group_name" {
   type        = string
   description = "Resource group name."

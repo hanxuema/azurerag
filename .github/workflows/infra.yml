@@ -1,12 +1,7 @@
-name: Infra
+name: Infra (Disabled)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "infra/**"
-      - ".github/workflows/infra.yml"
 
 permissions:
   id-token: write
@@ -14,6 +9,7 @@ permissions:
 
 jobs:
   terraform:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
